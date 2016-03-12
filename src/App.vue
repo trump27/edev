@@ -18,6 +18,8 @@ export default {
 </script>
 
 <style lang="stylus">
+body
+  font-family "メイリオ",Meiryo,"Helvetica Neue",Helvetica,Arial,sans-serif;
 .route-transition
   transition all 0.8s ease
 .route-leave
@@ -27,4 +29,6 @@ export default {
   padding 0 0
   height 0
   transform translate3d(0, 0, 0)
+div.container
+  margin-top 60px
 </style>

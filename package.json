@@ -1,7 +1,7 @@
 {
-  "name": "vueplate",
+  "name": "edev",
   "version": "0.0.1",
-  "description": "vue template",
+  "description": "edev",
   "main": "./src/index.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --hot --port 3000",
@@ -11,10 +11,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "vueplate"
+    "url": "edev"
   },
   "keywords": [
-    "template"
+    "edev"
   ],
   "author": "trump27",
   "license": "MIT",
