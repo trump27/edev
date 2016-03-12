@@ -13,6 +13,7 @@
       <div class="collapse navbar-collapse" id="navmenu">
         <ul class="nav navbar-nav">
           <li><a v-link="'/nodeinfo'">Node</a></li>
+          <li><a v-link="'/send'">Send</a></li>
         </ul>
       </div>
     </div>

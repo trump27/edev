@@ -93,8 +93,16 @@
 <script>
 import common from '../common.js'
 var web3 = common.web3()
+var filter
 
 export default {
+  route: {
+    canDeactivate: (transition) => {
+      filter.stopWatching()
+      transition.next()
+    }
+  },
+
   data () {
     return {
       msgErr: '',
@@ -131,7 +139,9 @@ export default {
     }
     this.nodeInfo()
     this.ethInfo()
-    web3.eth.filter('latest').watch(() => {
+
+    filter = web3.eth.filter('latest')
+    filter.watch(() => {
       this.ethInfo()
       console.log('watching...')
     })

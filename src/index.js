@@ -6,6 +6,7 @@ const router = new VueRouter()
 router.map({
   '/': { component: require('./components/Nodeinfo.vue') },
   '/nodeinfo': { component: require('./components/Nodeinfo.vue') },
+  '/send': { component: require('./components/Send.vue') },
   '*': { component: require('./components/Nodeinfo.vue') }
 })
 
