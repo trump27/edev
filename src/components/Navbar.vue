@@ -14,6 +14,7 @@
         <ul class="nav navbar-nav">
           <li><a v-link="'/nodeinfo'">Node</a></li>
           <li><a v-link="'/send'">Send</a></li>
+          <li><a v-link="'/tx'">Tx</a></li>
         </ul>
       </div>
     </div>

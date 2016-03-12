@@ -10,7 +10,18 @@ export default {
     }
     return web3
   },
+
   getBalance (addr) {
-    return web3.fromWei(web3.eth.getBalance(addr), 'ether')
+    return web3.fromWei(web3.eth.getBalance(addr), 'ether').toNumber(3)
+  },
+
+  unixtime2date (ux) {
+    if (!ux) return ''
+    var d = new Date(ux * 1000)
+    return [
+      d.getFullYear(),
+      d.getMonth() + 1,
+      d.getDate()
+    ].join('/') + ' ' + d.toLocaleTimeString()
   }
 }

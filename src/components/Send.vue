@@ -75,37 +75,38 @@ export default {
     },
 
     sendTransaction () {
+      this.msgInfo = this.msgErr = ''
       if (!this.from || !this.to || !this.value) {
         this.msgErr = 'invalid address'
         return
       }
       web3.defaultAccount = this.from
-      web3.eth.sendTransaction(
-        {from: this.from, to: this.to, value: this.value},
-        (err, result) => {
-          if (err) {
-            this.msgErr = err
-            console.log('e1: ', err)
-            return
-          }
-          var txhash = result
-          var filter = web3.eth.filter('latest')
-
-          filter.watch(function (error, result) {
-            if (error) console.log('watch: ', error)
-            // XXX this should be made asynchronous as well.  time
-            // to get the async library out...
-            var receipt = web3.eth.getTransactionReceipt(txhash)
-
-            console.log('filter: ', result)
-
-            if (receipt && receipt.transactionHash === txhash) {
-              console.log('ok', txhash)
-              filter.stopWatching()
-            }
-          })
+      var data = {from: this.from, to: this.to, value: this.value}
+      var estimate = web3.eth.estimateGas(data)
+      web3.eth.sendTransaction(data, (err, result) => {
+        if (err) {
+          this.msgErr = err
+          console.log('e1: ', err)
+          return
         }
-      )
+        var txhash = result
+        var filter = web3.eth.filter('latest')
+
+        filter.watch(function (error, result) {
+          if (error) console.log('watch: ', error)
+          // XXX this should be made asynchronous as well.  time
+          // to get the async library out...
+          var receipt = web3.eth.getTransactionReceipt(txhash)
+
+          console.log('filter: ', result)
+
+          if (receipt && receipt.transactionHash === txhash) {
+            console.log('ok', txhash)
+            filter.stopWatching()
+          }
+        })
+      })
+      this.msgInfo = 'Txを送信しました (estimate: ' + estimate + ')'
     }
   }
 }
