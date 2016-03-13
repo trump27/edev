@@ -59,7 +59,7 @@ export default {
         var receipt = web3.eth.getTransactionReceipt(txHash)
         // console.log('filter: ', result)
         if (receipt && receipt.transactionHash === txHash) {
-          console.log('ok', txHash)
+          console.log('app.vue watch: ', txHash)
           self.addLog('mined: ' + msg, tx)
           filter.stopWatching()
         }

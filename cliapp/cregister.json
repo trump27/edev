@@ -1,6 +1,27 @@
 {
-  "address": "0xd4eda91402c2c1f09e2681b930830deb6772ed9b",
+  "address": "0x455160b2f21f93a57a31b20ffdbd45a9a1fd605d",
   "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getContInfoByIndex",
+      "outputs": [
+        {
+          "name": "addr",
+          "type": "address"
+        },
+        {
+          "name": "abi",
+          "type": "string"
+        }
+      ],
+      "type": "function"
+    },
     {
       "constant": false,
       "inputs": [
@@ -21,7 +42,7 @@
           "type": "string"
         }
       ],
-      "name": "add",
+      "name": "regist",
       "outputs": [],
       "type": "function"
     },
@@ -40,7 +61,7 @@
           "type": "string"
         }
       ],
-      "name": "get",
+      "name": "getContInfo",
       "outputs": [
         {
           "name": "addr",
@@ -114,6 +135,28 @@
     {
       "inputs": [],
       "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "name": "status",
+          "type": "string"
+        }
+      ],
+      "name": "Changed",
+      "type": "event"
     }
   ]
 }

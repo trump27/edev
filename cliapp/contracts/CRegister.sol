@@ -2,6 +2,9 @@
 contract CRegister {
     address creator;
 
+    event Changed(address sender, string name, string status);
+    // event Changed(address sender);
+
     struct Cont {
         address addr;
         string abi;
@@ -15,7 +18,10 @@ contract CRegister {
         creator = msg.sender;
     }
 
-    function add(string name, address addr, string abi, string source) {
+    function regist(string name, address addr, string abi, string source) {
+        Changed(msg.sender, name, "regist request.");
+        // Changed(msg.sender);
+
         bytes memory bname = bytes(name);
         if (bname.length==0) throw;
         if (addr == address(0)) throw;
@@ -23,12 +29,18 @@ contract CRegister {
             list.push(name);
         }
         conts[name] = Cont(addr, abi, source, now);
-
+        Changed(msg.sender, name, "regist complete.");
+        // Changed(msg.sender);
     }
-    function get(string name) constant returns (address addr, string abi) {
+    function getContInfo(string name) constant returns (address addr, string abi) {
         addr = conts[name].addr;
         abi = conts[name].abi;
     }
+
+    function getContInfoByIndex(uint index) constant returns (address addr, string abi) {
+        return getContInfo(list[index]);
+    }
+
     // function getContractName() constant returns
     function getCount() constant returns (uint) {
         return list.length;

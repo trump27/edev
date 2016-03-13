@@ -15,6 +15,16 @@ export default {
     return web3.fromWei(web3.eth.getBalance(addr), 'ether').toNumber(3)
   },
 
+  loadRegister () {
+    var rJson = require('../cliapp/cregister.json')
+    return this.loadContract(rJson.address, rJson.abi)
+  },
+
+  loadContract (address, abiJson) {
+    var cont = web3.eth.contract(abiJson)
+    return cont.at(address)
+  },
+
   unixtime2date (ux) {
     if (!ux) return ''
     var d = new Date(ux * 1000)

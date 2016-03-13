@@ -15,6 +15,7 @@
           <li><a v-link="'/nodeinfo'">Node</a></li>
           <li><a v-link="'/send'">Send</a></li>
           <li><a v-link="'/tx'">Tx</a></li>
+          <li><a v-link="'/contract'">Contract</a></li>
         </ul>
       </div>
     </div>
