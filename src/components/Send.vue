@@ -100,25 +100,7 @@ export default {
         }
 
         this.msgInfo = 'Txを送信しました (estimate: ' + estimate + ')'
-
         this.$dispatch('tracking', result, 'send')
-
-        // var txhash = result
-        // var filter = web3.eth.filter('latest')
-
-        // filter.watch(function (error, result) {
-        //   if (error) console.log('watch: ', error)
-        //   // XXX this should be made asynchronous as well.  time
-        //   // to get the async library out...
-        //   var receipt = web3.eth.getTransactionReceipt(txhash)
-
-        //   console.log('filter: ', result)
-
-        //   if (receipt && receipt.transactionHash === txhash) {
-        //     console.log('ok', txhash)
-        //     filter.stopWatching()
-        //   }
-        // })
       })
     }
   }

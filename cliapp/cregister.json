@@ -1,0 +1,119 @@
+{
+  "address": "0xd4eda91402c2c1f09e2681b930830deb6772ed9b",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "addr",
+          "type": "address"
+        },
+        {
+          "name": "abi",
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "type": "string"
+        }
+      ],
+      "name": "add",
+      "outputs": [],
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "kill",
+      "outputs": [],
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "name": "get",
+      "outputs": [
+        {
+          "name": "addr",
+          "type": "address"
+        },
+        {
+          "name": "abi",
+          "type": "string"
+        }
+      ],
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "name": "getSource",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "name": "remove",
+      "outputs": [],
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "list",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "type": "constructor"
+    }
+  ]
+}
