@@ -5,43 +5,47 @@
     <div v-if="msgErr" class="alert alert-danger">{{msgErr}}</div>
     <div v-if="msgInfo" class="alert alert-success">{{msgInfo}}</div>
 
-    <div class="form-group">
-      <label class="col-sm-2 control-label">From:</label>
-      <div class="col-sm-10">
-        <select v-model="from" class="form-control">
-          <option v-for="option in accounts" v-bind:value="option.value">
-            {{ option.text }}
-          </option>
-        </select>
-      </div>
-    </div>
+    <div class="form-horizontal">
 
-    <div class="form-group">
-      <label class="col-sm-2 control-label">To:</label>
-      <div class="col-sm-10">
-        <select v-model="selectedTo" @click="changeToList" class="form-control">
-          <option v-for="option in accounts" v-bind:value="option.value">
-            {{ option.text }}
-          </option>
-        </select>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">From:</label>
+        <div class="col-sm-10">
+          <select v-model="from" class="form-control">
+            <option v-for="option in accounts" v-bind:value="option.value">
+              {{ option.text }}
+            </option>
+          </select>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label class="col-sm-2 control-label"></label>
-      <div class="col-sm-10">
-        <input v-model="to" type="text" class="form-control" required="required" placeholder="address">
+      <div class="form-group" style="margin-top:30px;">
+        <label class="col-sm-2 control-label">To:</label>
+        <div class="col-sm-10">
+          <select v-model="selectedTo" @click="changeToList" class="form-control" style="background-color:#eee">
+            <option v-for="option in accounts" v-bind:value="option.value">
+              {{ option.text }}
+            </option>
+          </select>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label class="col-sm-2 control-label">Value:</label>
-      <div class="col-sm-10">
-        <input v-model="value" type="text" class="form-control" required="required" placeholder="ether">
+      <div class="form-group">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-sm-10">
+          <input v-model="to" type="text" class="form-control" required="required" placeholder="address">
+        </div>
       </div>
-    </div>
 
-    <button @click.prevent="sendTransaction" class="btn btn-primary">Send transaction</button>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Value:</label>
+        <div class="col-sm-10">
+          <input v-model="value" type="text" class="form-control" required="required" placeholder="ether">
+        </div>
+      </div>
+
+      <button @click.prevent="sendTransaction" class="btn btn-primary">Send transaction</button>
+
+    </div>
 
   </div>
 </template>
@@ -76,12 +80,17 @@ export default {
 
     sendTransaction () {
       this.msgInfo = this.msgErr = ''
-      if (!this.from || !this.to || !this.value) {
-        this.msgErr = 'invalid address'
+      if (!this.from || !this.value || !web3.isAddress(this.to)) {
+        this.msgErr = 'invalid input'
         return
       }
+      if (isNaN(this.value) || this.value < 0) {
+        this.msgErr = 'invalid value'
+      }
       web3.defaultAccount = this.from
-      var data = {from: this.from, to: this.to, value: this.value}
+
+      var value = web3.toWei(this.value, 'ether')
+      var data = {from: this.from, to: this.to, value: value}
       var estimate = web3.eth.estimateGas(data)
       web3.eth.sendTransaction(data, (err, result) => {
         if (err) {
@@ -89,24 +98,28 @@ export default {
           console.log('e1: ', err)
           return
         }
-        var txhash = result
-        var filter = web3.eth.filter('latest')
 
-        filter.watch(function (error, result) {
-          if (error) console.log('watch: ', error)
-          // XXX this should be made asynchronous as well.  time
-          // to get the async library out...
-          var receipt = web3.eth.getTransactionReceipt(txhash)
+        this.msgInfo = 'Txを送信しました (estimate: ' + estimate + ')'
 
-          console.log('filter: ', result)
+        this.$dispatch('tracking', result, 'send')
 
-          if (receipt && receipt.transactionHash === txhash) {
-            console.log('ok', txhash)
-            filter.stopWatching()
-          }
-        })
+        // var txhash = result
+        // var filter = web3.eth.filter('latest')
+
+        // filter.watch(function (error, result) {
+        //   if (error) console.log('watch: ', error)
+        //   // XXX this should be made asynchronous as well.  time
+        //   // to get the async library out...
+        //   var receipt = web3.eth.getTransactionReceipt(txhash)
+
+        //   console.log('filter: ', result)
+
+        //   if (receipt && receipt.transactionHash === txhash) {
+        //     console.log('ok', txhash)
+        //     filter.stopWatching()
+        //   }
+        // })
       })
-      this.msgInfo = 'Txを送信しました (estimate: ' + estimate + ')'
     }
   }
 }

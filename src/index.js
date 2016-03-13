@@ -8,6 +8,7 @@ router.map({
   '/nodeinfo': { component: require('./components/Nodeinfo.vue') },
   '/send': { component: require('./components/Send.vue') },
   '/tx': { component: require('./components/Tx.vue') },
+  '/tx/:hash': { component: require('./components/Tx.vue') },
   '*': { component: require('./components/Nodeinfo.vue') }
 })
 

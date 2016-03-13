@@ -17,6 +17,7 @@
       <button @click="searchTxHash" class="btn btn-primary">Search</button>
     </div>
 
+    <div><br></div>
     <div v-for="tx in txs" class="panel panel-success">
       <div class="panel-heading"><h3 class="panel-title">Block #{{tx.number}}</h3></div>
       <div class="panel-body">
@@ -41,7 +42,7 @@
                 <dt>nonce</dt><dd>{{txl.nonce}}</dd>
                 <dt>from</dt><dd><a v-link="'/account/' + txl.from">{{txl.from}}</a></dd>
                 <dt>to</dt><dd><a v-link="'/account/' + txl.to">{{txl.to}}</a></dd>
-                <dt>value</dt><dd>{{txl.value}}<span class="badge">{{txl.valueEther}}</span></dd>
+                <dt>value</dt><dd>{{txl.value}} <span class="badge">{{txl.etherValue}}</span></dd>
                 <dt>gasPrice</dt><dd>{{txl.gasPrice}}</dd>
                 <dt>gas</dt><dd>{{txl.gas}}</dd>
                 <dt>input</dt><dd>{{txl.input}}</dd>
@@ -75,20 +76,26 @@ export default {
   ready () {
     this.blockTo = web3.eth.blockNumber
     this.blockFrom = (this.blockTo > 500) ? this.blockTo - 500 : 0
+    if (this.$route.params.hash) {
+      this.txHash = this.$route.params.hash
+      this.searchTxHash()
+    }
   },
 
   methods: {
-    getTx (txHash, block) {
-      var tx = web3.eth.getTransaction(txHash)
-      if (!tx) return null
-      tx.valueEther = web3.fromWei(tx.value, 'ether')
-      if (!block) {
-        block = web3.eth.getBlock(tx.blockHash)
-      }
-      tx.timestamp = common.unixtime2date(block.timestamp)
-      return tx
-    },
+    // getTx (txHash, block) {
+    //   var tx = web3.eth.getTransaction(txHash)
+    //   if (!tx) return null
+    //   tx.valueEther = web3.fromWei(tx.value, 'ether')
+    //   if (!block) {
+    //     block = web3.eth.getBlock(tx.blockHash)
+    //   }
+    //   tx.timestamp = common.unixtime2date(block.timestamp)
+    //   return tx
+    // },
+
     /**
+     * 格納するblock, txを作成する
      * @param {number} blockNumer transaction count > 0 のblock
      * @return {object}
      */
@@ -99,6 +106,7 @@ export default {
       for (var i = 0; i < block.transactions.length; i++) {
         var tx = web3.eth.getTransaction(block.transactions[i])
         tx = JSON.parse(JSON.stringify(tx))
+        tx.etherValue = web3.fromWei(tx.value, 'ether')
         txlist.push(tx)
       }
       delete block.transactions
@@ -107,6 +115,7 @@ export default {
       // console.log(block)
       return block
     },
+
     searchTx () {
       if (this.txs.length > 0) this.txs.splice(0, this.txs.length)
 
@@ -115,10 +124,23 @@ export default {
           this.txs.push(this.setBlock(i))
         }
       }
-      console.log(this.txs)
+      // console.log(this.txs)
     },
-    searchTxHash () {
 
+    searchTxHash () {
+      if (this.txs.length > 0) this.txs.splice(0, this.txs.length)
+      this.msgErr = ''
+      if (!this.txHash) {
+        this.msgErr = 'invalid tx hash'
+        return
+      }
+      var tx = web3.eth.getTransaction(this.txHash)
+      // console.log(tx)
+      if (tx) {
+        this.txs.push(this.setBlock(tx.blockNumber))
+      } else {
+        this.msgErr = 'not found'
+      }
     }
   }
 }
