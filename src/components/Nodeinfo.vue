@@ -67,6 +67,9 @@
           <div class="col-sm-3">eth.defaultBlock</div><div class="col-sm-9">{{eth.defaultBlock}}</div>
         </div>
         <div class="row">
+          <div class="col-sm-3">eth.gasLimit</div><div class="col-sm-9">{{eth.gasLimit}}</div>
+        </div>
+        <div class="row">
           <div class="col-sm-3">eth.pendingCount</div><div class="col-sm-9">{{eth.pending}}</div>
         </div>
         <div class="row">
@@ -124,6 +127,7 @@ export default {
       eth: {
         defaultAccount: '',
         defaultBlock: '',
+        gasLimit: '',
         pending: '',
         syncing: '',
         coinbase: '',
@@ -165,6 +169,7 @@ export default {
     ethInfo () {
       this.eth.defaultAccount = web3.eth.defaultAccount
       this.eth.defaultBlock = web3.eth.defaultBlock
+      this.eth.gasLimit = web3.eth.getBlock('latest').gasLimit
 
       this.eth.pending = web3.eth.getBlockTransactionCount('pending')
 

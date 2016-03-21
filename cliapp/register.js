@@ -50,7 +50,7 @@ var sequence = Promise.resolve()    // for sequential processes(Promise) in loop
  */
 contractNames.forEach((contractName) => {
   sequence = sequence.then(() => {
-    console.log('target contract', contractName)
+    console.log('target contract:', contractName)
     var params = {
       name: contractName,
       address: '',
@@ -103,6 +103,14 @@ function deployContract (params) {
     contract.new(data, (err, result) => {
       if (err) { console.log(err); reject(err); return }
       if (result.address) {
+        // check code
+        var code = web3.eth.getCode(result.address)
+        if (code === nullCode) {
+          console.log('regist failed(null code)', params.name, params.address)
+          reject()
+          return
+        }
+
         console.log(params.name, 'address:', result.address)
         params.address = result.address
         resolve(params)
@@ -161,13 +169,6 @@ function registContract (params) {
         console.log('registing.. tx:', params.name, txHash)
         watchMining(txHash)
         .then(() => {
-          // check code
-          var code = web3.eth.getCode(params.address)
-          if (code === nullCode) {
-            console.log('regist failed(null code)', params.name, params.address)
-            reject()
-            return
-          }
           console.log('contract registed:', params.name)
           resolve(params)
         }, (err) => {

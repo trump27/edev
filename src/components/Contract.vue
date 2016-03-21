@@ -10,7 +10,7 @@
         <th>Name</th><th>Address</th>
       </tr>
       <tr v-for="cont in contracts">
-        <td>{{name}}</td><td>{{address}}</td>
+        <td>{{cont.name}}</td><td>{{cont.addr}}</td>
       </tr>
     </table>
 
@@ -77,27 +77,40 @@ export default {
     register = common.loadRegister()
     console.log(register)
 
-    var event = register.Changed()
-    event.watch(function (err, result) {
-      if (err) {
-        console.log('event error: ', err)
-      } else {
-        console.log('Changed: ', result)
-      }
+    this.mytest()
+    register.eventNotify((err, result) => {
+      if (err) console.log('eventNotify err')
+      console.log('eventNotify', result.args)
     })
+
+    // var event = register.Changed()
+    // event.watch(function (err, result) {
+    //   if (err) {
+    //     console.log('event error: ', err)
+    //   } else {
+    //     console.log('Changed: ', result)
+    //   }
+    // })
 
     this.getList()
   },
 
   methods: {
+    mytest () {
+      var str = web3.eth.getStorageAt(register.address, 0)
+      console.log('storage', str)
+    },
+
     getList () {
       var cnt = register.getCount.call().toNumber()
       console.log(cnt)
 
       if (this.contracts.length > 0) this.contracts.splice(0, this.contracts.length)
       for (var i = 0; i < cnt; i++) {
-        var item = register.getContInfoByIndex(i)
-        this.contracts.push({name: item[0], addr: item[1]})
+        var item = register.getNameByIndex(i)
+        var itemCont = register.getContInfoByIndex(i)
+
+        this.contracts.push({name: item, addr: itemCont[0]})
       }
     },
 
@@ -105,6 +118,7 @@ export default {
       this.msgInfo = this.msgErr = ''
       if (!this.register.name || !this.register.address || !this.register.abi) {
         this.msgErr = 'invalid input'
+        // return
       }
 
       register.regist(

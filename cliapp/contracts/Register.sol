@@ -34,6 +34,10 @@ contract Register {
         abi = conts[name].abi;
     }
 
+    function getNameByIndex(uint index) constant returns (string name) {
+        return list[index];
+    }
+
     function getContInfoByIndex(uint index) constant returns (address addr, string abi) {
         return getContInfo(list[index]);
     }
@@ -45,6 +49,7 @@ contract Register {
     function getSource(string name) constant returns (string) {
         return conts[name].source;
     }
+
     function _getIndex(string name) internal constant returns (int index) {
         int ret = -1;
         for (var i=0; i<list.length; i++) {

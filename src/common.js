@@ -16,7 +16,7 @@ export default {
   },
 
   loadRegister () {
-    var rJson = require('../cliapp/cregister.json')
+    var rJson = require('../cliapp/register.json')
     return this.loadContract(rJson.address, rJson.abi)
   },
 

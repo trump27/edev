@@ -57,9 +57,10 @@ export default {
           self.addLog('watching: ' + msg, tx)
         }
         var receipt = web3.eth.getTransactionReceipt(txHash)
-        // console.log('filter: ', result)
+        // console.log('result: ', result) => block hash
         if (receipt && receipt.transactionHash === txHash) {
-          console.log('app.vue watch: ', txHash)
+          console.log('receipt: ', receipt)
+          console.log('app.vue watched: ', txHash)
           self.addLog('mined: ' + msg, tx)
           filter.stopWatching()
         }
@@ -73,6 +74,7 @@ export default {
 <style lang="stylus">
 body
   font-family "メイリオ",Meiryo,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  margin-bottom 60px
 .route-transition
   transition all 0.8s ease
 .route-leave
